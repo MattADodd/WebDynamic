@@ -9,6 +9,7 @@ const writeURL = "/writeFile";
 const readURL = "/readFile";
 const dateURL = "/getDate";
 const {message} = require("./modules/lang/messages/en/lab3")
+const br = "</br>"
 
 const server = http.createServer((req, res) => {
     const parsedUrl = urlModule.parse(req.url, true);
@@ -18,21 +19,25 @@ const server = http.createServer((req, res) => {
     if (url === writeURL) {
         const text = query.text || "";
         if (fs.existsSync(filePath)) {
-            fs.appendFile(filePath, `${text}\n`, (err) => {
+            fs.appendFile(filePath, `${text}${br}`, (err) => {
                 if (err) {
                     res.statusCode = 500;
+                    res.setHeader("Content-Type", "text/html");
                     res.end(message.appendError);
                     return;
                 }
+                res.setHeader("Content-Type", "text/html");
                 res.end(message.append);
             });
         } else {
-            fs.writeFile(filePath, `${text}\n`, (err) => {
+            fs.writeFile(filePath, `${text}${br}`, (err) => {
                 if (err) {
                     res.statusCode = 500;
+                    res.setHeader("Content-Type", "text/html");
                     res.end(message.fileError);
                     return;
                 }
+                res.setHeader("Content-Type", "text/html");
                 res.end(message.file);
             });
         }
@@ -45,7 +50,7 @@ const server = http.createServer((req, res) => {
                 res.statusCode = 404;
                 res.end(message.fileNotFound + fileName);
             } else {
-                res.setHeader("Content-Type", "text/plain");
+                res.setHeader("Content-Type", "text/html");
                 res.end(data);
             }
         });
