@@ -48,6 +48,7 @@ const server = http.createServer((req, res) => {
                 fs.readFile(path.join(__dirname, fileName), "utf8", (err, data) => {
             if (err) {
                 res.statusCode = 404;
+                res.setHeader("Content-Type", "text/html");
                 res.end(message.fileNotFound + fileName);
             } else {
                 res.setHeader("Content-Type", "text/html");
