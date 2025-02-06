@@ -8,7 +8,7 @@ const filePath = path.join(__dirname, "file.txt");
 const writeURL = "/writeFile";
 const readURL = "/readFile";
 const dateURL = "/getDate";
-const {message} = require("./modules/lang/messages/en/lab3")
+const { message } = require("./modules/lang/messages/en/lab3")
 const br = "</br>"
 
 const server = http.createServer((req, res) => {
@@ -45,9 +45,9 @@ const server = http.createServer((req, res) => {
 
     if (url.startsWith(readURL)) {
         const fileName = url.slice(readURL.length + 1);
-                fs.readFile(path.join(__dirname, fileName), "utf8", (err, data) => {
+        fs.readFile(path.join(__dirname, fileName), "utf8", (err, data) => {
             if (err) {
-                res.statusCode = 404;
+                res.statusCode = 500;
                 res.setHeader("Content-Type", "text/html");
                 res.end(message.fileNotFound + fileName);
             } else {
